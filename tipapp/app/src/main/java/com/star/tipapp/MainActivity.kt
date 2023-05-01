@@ -91,15 +91,30 @@ fun TopCard(totalPerPerson : Double = 134.00) {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainContent() {
-
-    BillForm{
-        billAmt -> Log.d("AMT", "Amount $billAmt")
+    var tipAmount = remember {
+        mutableStateOf(0.0)
     }
+    var totalPerPerson = remember {
+        mutableStateOf(0.0)
+    }
+
+    var splitCount = remember {
+        mutableStateOf(1)
+    }
+
+
+    BillForm(tipAmountValue= tipAmount, totalPerPersonState = totalPerPerson, splitCountState = splitCount)
 }
 
 @ExperimentalComposeUiApi
 @Composable
-fun BillForm(modifier: Modifier= Modifier, onValueChange : (String)->Unit = {}) {
+fun BillForm(
+    modifier: Modifier = Modifier,
+    onValueChange: (String) -> Unit = {},
+    splitCountState: MutableState<Int>,
+    tipAmountValue : MutableState<Double>,
+    totalPerPersonState : MutableState<Double>
+) {
 
     val total = remember {
         mutableStateOf("")
@@ -111,26 +126,16 @@ fun BillForm(modifier: Modifier= Modifier, onValueChange : (String)->Unit = {}) 
 
     val keyBoardController = LocalSoftwareKeyboardController.current
 
-    var splitCount by remember {
-        mutableStateOf(1)
-    }
 
     var sliderPositionState by remember {
         mutableStateOf(0f)
-    }
-    var tipAmountValue by remember {
-        mutableStateOf(0.0)
-    }
-
-    var totalPerPersonState by remember {
-        mutableStateOf(0.0)
     }
 
     var tipPercentage by remember {
         mutableStateOf(0)
     }
 
-    TopCard(totalPerPerson = totalPerPersonState)
+    TopCard(totalPerPerson = totalPerPersonState.value)
 
     Surface(
         modifier = Modifier
@@ -179,20 +184,20 @@ fun BillForm(modifier: Modifier= Modifier, onValueChange : (String)->Unit = {}) 
                         RoundIconButton(
                             imageVector = Icons.Default.Clear,
                             onClick = {
-                                if (splitCount > 1) splitCount-- else splitCount = 1
-                                totalPerPersonState = calculateTotalPerPerson(total.value.toDouble(), splitCount, tipPercentage)
+                                if (splitCountState.value > 1) splitCountState.value-- else splitCountState.value = 1
+                                totalPerPersonState.value = calculateTotalPerPerson(total.value.toDouble(), splitCountState.value, tipPercentage)
                             }
                         )
 
                         Text(
-                            text = splitCount.toString(),
+                            text = splitCountState.toString(),
                             modifier = Modifier
                                 .align(alignment = Alignment.CenterVertically)
                                 .padding(start = 9.dp, end = 9.dp)
                         )
                         RoundIconButton(imageVector = Icons.Default.Add, onClick = {
-                            splitCount++
-                            totalPerPersonState = calculateTotalPerPerson(total.value.toDouble(), splitCount, tipPercentage)
+                            splitCountState.value++
+                            totalPerPersonState.value = calculateTotalPerPerson(total.value.toDouble(), splitCountState.value, tipPercentage)
                         })
 
                     }
@@ -225,8 +230,8 @@ fun BillForm(modifier: Modifier= Modifier, onValueChange : (String)->Unit = {}) 
                         value = sliderPositionState,
                         onValueChange = { newVal ->
                             sliderPositionState = newVal
-                            tipAmountValue = calculateTip(total.value.toDouble(), tipPercentage)
-                            totalPerPersonState = calculateTotalPerPerson(total.value.toDouble(), splitCount, tipPercentage)
+                            tipAmountValue.value = calculateTip(total.value.toDouble(), tipPercentage)
+                            totalPerPersonState.value = calculateTotalPerPerson(total.value.toDouble(), splitCountState.value, tipPercentage)
                         },
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                         steps = 10
