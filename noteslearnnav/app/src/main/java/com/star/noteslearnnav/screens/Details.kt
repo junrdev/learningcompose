@@ -1,6 +1,7 @@
 package com.star.noteslearnnav.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -28,23 +29,23 @@ fun DetailsScreen(navController: NavController, note: String?) {
                     Text(text ="Note Details")
                 }
             }
-        }//top bar end
-
+        },//top bar end
+    backgroundColor = resolveColor()
     ) {
             Column(modifier = Modifier
                 .fillMaxSize()
                 .padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                SingleNoteView(note)
+                SingleNoteView(note,backgroundColor = resolveColor())
             }
         }
     }
 
 @Composable
-fun SingleNoteView(note: String?) {
+fun SingleNoteView(note: String?, backgroundColor: Color) {
 
-    Surface(modifier = Modifier, shape = RoundedCornerShape(12.dp), color = Color.DarkGray, elevation = 12.dp) {
+    Surface(modifier = Modifier, shape = RoundedCornerShape(12.dp), color = backgroundColor, elevation = 12.dp) {
         Column(
-            modifier = Modifier.padding(25.dp),
+            modifier = Modifier.fillMaxWidth().background(resolveColor()).padding(25.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -57,9 +58,12 @@ fun SingleNoteView(note: String?) {
     }
 
     //delete or save
-    Surface(modifier = Modifier.padding(top = 15.dp)) {
+    Surface(modifier = Modifier.padding(top = 15.dp), color= Color.Transparent) {
 
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Row(
+            modifier = Modifier.fillMaxWidth().background(Color.Transparent),
+            horizontalArrangement = Arrangement.Center,
+        ) {
             Button(
                 modifier = Modifier,
                 elevation = ButtonDefaults.elevation(6.dp),
