@@ -190,7 +190,7 @@ fun BillForm(
                         )
 
                         Text(
-                            text = splitCountState.toString(),
+                            text = splitCountState.value.toString(),
                             modifier = Modifier
                                 .align(alignment = Alignment.CenterVertically)
                                 .padding(start = 9.dp, end = 9.dp)
@@ -210,7 +210,7 @@ fun BillForm(
 
                     Text(text = "Tip", modifier = Modifier.align(alignment = Alignment.CenterVertically))
                     Spacer(modifier = Modifier.width(170.dp))
-                    Text(text = "$ $tipAmountValue", modifier = Modifier
+                    Text(text = "$ ${tipAmountValue.value}", modifier = Modifier
                         .align(alignment = Alignment.CenterVertically)
                         .padding(end = 5.dp))
                 }
