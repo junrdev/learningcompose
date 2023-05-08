@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.star.socialapp1.navigation.AppNavigator
 import com.star.socialapp1.ui.theme.Socialapp1Theme
 
 class MainActivity : ComponentActivity() {
@@ -18,8 +19,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             Socialapp1Theme {
                 // A surface container using the 'background' color from the theme
-                App(){
-
+                App {
+                    AppNavigator()
                 }
             }
         }
