@@ -77,7 +77,7 @@ fun MovieRow(it: Movie, onItemClick : (String) -> Unit ={}) {
                 Text(text = "Director : ${it.title}", style = MaterialTheme.typography.caption)
                 Text(text = "Release : ${it.yearRelease}", style = MaterialTheme.typography.caption)
 
-
+                //toggles the visibility with an animated transtion
                 AnimatedVisibility(visible = isExpanded) {
                     Column {
                         Text(buildAnnotatedString {
